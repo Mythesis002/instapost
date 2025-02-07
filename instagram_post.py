@@ -175,4 +175,5 @@ print("✅ Bot is now running on Render...")
 # 🔹 Run the schedule continuously
 while True:
     schedule.run_pending()
-    time.sleep(60)
+    print("waiting for 7 pm to post Reels")
+    time.sleep(40)
