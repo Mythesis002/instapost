@@ -177,13 +177,13 @@ def post_reel():
         print("❌ Error: Failed to upload the video.")
 
 # 🔹 Schedule it to run daily at 7 PM IST (14:00 UTC)
-schedule.every().day.at("15:46").do(post_reel)
+schedule.every().day.at("15:54").do(post_reel)
 
 # 🔹 Start Scheduler in a Background Thread
 def run_scheduler():
     while True:
         schedule.run_pending()
-        time.sleep(60)
+        time.sleep(30)
 
 scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
 scheduler_thread.start()
