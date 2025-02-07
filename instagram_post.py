@@ -13,6 +13,15 @@ import os
 import time
 import schedule
 import datetime
+import threading
+from flask import Flask
+
+# 🔹 Flask Web Server for Render
+app = Flask(__name__)
+
+@app.route("/")
+def home():
+    return "✅ Instagram Reel Bot is Running!"
 
 # 🔹 Instagram Credentials
 ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9AlupOjbJ5xYSTBrMIMTVtu9n530I3ZC2JZBuZBpCDzHyjI7ngh8EtCrSvUho9VGZB9Xdxt5JLGNrHwfDsSIqtvxFjefG2t2JsgJpqfZAMCjO8AURp79mU0WAaLA7R"
@@ -41,9 +50,9 @@ def post_reel():
             {
                 "role": "system",
                 "content": "You are an AI assistant that specializes in converting text descriptions into high-quality, "
-                       "crunchy Instagram headlines for text overlays and detailed image prompts for AI image generation. "
-                       "Your goal is to analyze the given content, extract key visual elements, and generate a professional, structured image prompt. "
-                       "Additionally, generate a short, crunchy hooking headline (maximum 5 words) that summarizes the image concept."
+                           "crunchy Instagram headlines for text overlays and detailed image prompts for AI image generation. "
+                           "Your goal is to analyze the given content, extract the key visual elements, and generate a professional, structured image prompt. "
+                           "Additionally, generate a short, crunchy hooking headline (maximum 5 words) that summarizes the image concept."
             },
             {
                 "role": "user",
@@ -167,12 +176,18 @@ def post_reel():
     else:
         print("❌ Error: Failed to upload the video.")
 
-# 🔹 Schedule it to run daily at 7 PM UTC (Convert your local time)
-schedule.every().day.at("14:00").do(post_reel)  # 7 PM IST = 14:00 UTC
+# 🔹 Schedule it to run daily at 7 PM IST (14:00 UTC)
+schedule.every().day.at("14:00").do(post_reel)
 
-print("✅ Bot is now running on Render...")
+# 🔹 Start Scheduler in a Background Thread
+def run_scheduler():
+    while True:
+        schedule.run_pending()
+        time.sleep(60)
 
-# 🔹 Run the schedule continuously
-while True:
-    schedule.run_pending()
-    time.sleep(60) 
+scheduler_thread = threading.Thread(target=run_scheduler, daemon=True)
+scheduler_thread.start()
+
+# 🔹 Run Flask on Render (Port 10000)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=10000)
