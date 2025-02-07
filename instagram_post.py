@@ -141,7 +141,7 @@ def post_reel():
     print("✅ Reel Uploaded Successfully!")
 
 # 🔹 Schedule it to run daily at 8:46 PM IST
-schedule.every().day.at("05:40").do(post_reel)  
+schedule.every().day.at("05:44").do(post_reel)  
 
 def run_scheduler():
     while True:
