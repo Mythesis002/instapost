@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw, ImageFont
 import cloudinary
 import cloudinary.uploader
 import io
-import subprocess
+import ffmpeg
 import os
 import time
 import schedule
@@ -101,7 +101,7 @@ def post_reel():
         "-y",
         video_path
     ]
-    subprocess.run(ffmpeg_command, check=True)
+    ffmpeg.input(video_path).output(final_video_path, vcodec="copy", acodec="aac").run()
 
     # 🔹 4. Merge Video with Music
     music_path = "ReelAudio.mp3"
