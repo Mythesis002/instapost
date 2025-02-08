@@ -5,17 +5,11 @@ from PIL import Image, ImageDraw, ImageFont
 import cloudinary
 import cloudinary.uploader
 import io
-from moviepy.editor import ImageSequenceClip
-import numpy as np
 import subprocess
-import textwrap
 import os
 import time
 import schedule
 import datetime
-
-subprocess.run(["apt-get", "update"])
-subprocess.run(["apt-get", "install", "-y", "ffmpeg"])
 
 # 🔹 Instagram Credentials
 ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9AlupOjbJ5xYSTBrMIMTVtu9n530I3ZC2JZBuZBpCDzHyjI7ngh8EtCrSvUho9VGZB9Xdxt5JLGNrHwfDsSIqtvxFjefG2t2JsgJpqfZAMCjO8AURp79mU0WAaLA7R"
@@ -48,10 +42,7 @@ def post_reel():
                        "Your goal is to analyze the given content, extract key visual elements, and generate a professional, structured image prompt. "
                        "Additionally, generate a short, crunchy hooking headline (maximum 5 words) that summarizes the image concept."
             },
-            {
-                "role": "user",
-                "content": caption_text
-            }
+            {"role": "user", "content": caption_text}
         ],
         "web_access": False
     }
@@ -62,15 +53,15 @@ def post_reel():
     }
     response = requests.post(url, json=payload, headers=headers)
     response_data = response.json()
-    
+
     # 🔹 Extract Headline & Image Prompt
     result_text = response_data.get("result", "")
     headline_match = re.search(r'\*\*Headline:\*\*\n"(.+?)"', result_text)
-    headline = headline_match.group(1) if headline_match else "No headline found"
+    headline = headline_match.group(1) if headline_match else "No headline"
     image_prompt_match = re.search(r'\*\*Image Prompt:\*\*\n(.+)', result_text, re.DOTALL)
-    image_prompt = image_prompt_match.group(1).strip() if image_prompt_match else "No image prompt found"
+    image_prompt = image_prompt_match.group(1).strip() if image_prompt_match else "No image prompt"
 
-    # 🔹 3. Generate Image & Create Video
+    # 🔹 3. Generate Image
     client = InferenceClient(token="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")
     model = "black-forest-labs/FLUX.1-dev"
     image_data = client.text_to_image(image_prompt, model=model)
@@ -90,40 +81,43 @@ def post_reel():
     text_width = draw.textlength(headline, font=font)
     text_x = (1080 - text_width) // 2
     text_y = 320
-    draw.rectangle(
-        [(text_x - 20, text_y - 20), (text_x + text_width + 20, text_y + 80)],
-        fill="black"
-    )
+    draw.rectangle([(text_x - 20, text_y - 20), (text_x + text_width + 20, text_y + 80)], fill="black")
     draw.text((text_x, text_y), headline, font=font, fill="white")
 
-    # 🔹 Convert Image to Video
-    image_bytes = io.BytesIO()
-    background.save(image_bytes, format='PNG')
-    image_bytes.seek(0)
-    imaget = Image.open(image_bytes).convert("RGB")
-    image_np = np.array(imaget)
-    video_clip = ImageSequenceClip([image_np] * 10, fps=1)
-    temp_video_path = "/temp_video.mp4"
-    video_clip.write_videofile(temp_video_path, codec="mpeg4", fps=24, logger=None)
+    # 🔹 Save Image
+    image_path = "generated_image.png"
+    background.save(image_path)
 
+    # 🔹 Convert Image to Video Using FFmpeg
+    video_path = "output_video.mp4"
+    ffmpeg_command = [
+        "ffmpeg",
+        "-loop", "1",
+        "-i", image_path,
+        "-t", "15",
+        "-vf", "scale=1080:1920,format=yuv420p",
+        "-c:v", "libx264",
+        "-r", "30",
+        "-y",
+        video_path
+    ]
+    subprocess.run(ffmpeg_command, check=True)
 
-    
     # 🔹 4. Merge Video with Music
-    music_path = os.path.join(os.getcwd(), "ReelAudio.mp3")
-    temp_merged_video_path = "/temp_merged_video.mp4"
+    music_path = "ReelAudio.mp3"
+    final_video_path = "final_video.mp4"
 
     ffmpeg_command = [
         "ffmpeg",
-        "-i", temp_video_path,
+        "-i", video_path,
         "-i", music_path,
         "-c:v", "copy",
         "-c:a", "aac",
         "-strict", "experimental",
         "-shortest",
-        temp_merged_video_path
+        final_video_path
     ]
-    subprocess.run(ffmpeg_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
-
+    subprocess.run(ffmpeg_command, check=True)
 
     # 🔹 5. Upload Video to Cloudinary
     cloudinary.config(
@@ -132,14 +126,15 @@ def post_reel():
         api_secret="9HUrfG_i566NzrCZUVxKyCHTG9U"
     )
     upload_result = cloudinary.uploader.upload_large(
-        temp_merged_video_path,
+        final_video_path,
         resource_type="video",
         chunk_size=6000000,
-        folder="generated_images"
+        folder="generated_videos"
     )
 
-    os.remove(temp_video_path)
-    os.remove(temp_merged_video_path)
+    os.remove(image_path)
+    os.remove(video_path)
+    os.remove(final_video_path)
 
     final_url = upload_result["secure_url"]
     print("✅ Final Instagram Reel URL:", final_url)
@@ -155,13 +150,11 @@ def post_reel():
 
     response = requests.post(upload_url, data=payload)
     response_data = response.json()
-    print(response_data)
-
     media_id = response_data.get("id")
 
     if media_id:
         print("⏳ Waiting for Instagram to process the video...")
-        time.sleep(10)  
+        time.sleep(10)
 
         publish_url = f"https://graph.facebook.com/v18.0/{INSTAGRAM_ACCOUNT_ID}/media_publish"
         publish_payload = {
