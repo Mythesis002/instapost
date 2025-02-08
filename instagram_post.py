@@ -103,9 +103,11 @@ def post_reel():
     temp_video_path = "/tmp/temp_video.mp4"
     video_clip.write_videofile(temp_video_path, codec="mpeg4", fps=24, logger=None)
 
+
+    
     # 🔹 4. Merge Video with Music
     music_path = "/ReelAudio.mp3"  
-    temp_merged_video_path = "/tmp/temp_merged_video.mp4""
+    temp_merged_video_path = "/tmp/temp_merged_video.mp4"
 
     ffmpeg_command = [
         "ffmpeg",
@@ -168,13 +170,4 @@ def post_reel():
     else:
         print("❌ Error: Failed to upload the video.")
 
-# 🔹 Schedule it to run daily at 7 PM UTC (Convert your local time)
-schedule.every().day.at("06:30").do(post_reel)  # 7 PM IST = 14:00 UTC
-
-print("✅ Bot is now running on Render...")
-
-# 🔹 Run the schedule continuously
-while True:
-    schedule.run_pending()
-    print("waiting for 7 pm to post Reels")
-    time.sleep(40)
+post_reel()
