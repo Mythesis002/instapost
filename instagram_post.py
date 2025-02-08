@@ -99,7 +99,7 @@ def post_reel():
     image_bytes.seek(0)
     imaget = Image.open(image_bytes).convert("RGB")
     image_np = np.array(imaget)
-    video_clip = ImageSequenceClip([image_np] * 15, fps=1)
+    video_clip = ImageSequenceClip([image_np] * 10, fps=1)
     temp_video_path = "temp_video.mp4"
     video_clip.write_videofile(temp_video_path, codec="libx264", fps=24, logger=None)
 
