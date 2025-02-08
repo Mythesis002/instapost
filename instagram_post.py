@@ -101,7 +101,7 @@ def post_reel():
     image_np = np.array(imaget)
     video_clip = ImageSequenceClip([image_np] * 10, fps=1)
     temp_video_path = "temp_video.mp4"
-    video_clip.write_videofile(temp_video_path, codec="libx264", fps=24, logger=None)
+    video_clip.write_videofile(temp_video_path, codec="mpeg4", fps=24, logger=None)
 
     # 🔹 4. Merge Video with Music
     music_path = "/ReelAudio.mp3"  
