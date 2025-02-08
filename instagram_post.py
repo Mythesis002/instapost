@@ -89,7 +89,7 @@ def post_reel():
     background.save(image_path)
 
     # 🔹 Convert Image to Video Using FFmpeg
-    video_path = "output_video.mp4"
+    video_path = "/tmp/temp_video.mp4"  
     ffmpeg_command = [
         "ffmpeg",
         "-loop", "1",
@@ -105,7 +105,7 @@ def post_reel():
 
     # 🔹 4. Merge Video with Music
     music_path = "ReelAudio.mp3"
-    final_video_path = "final_video.mp4"
+    final_video_path = "/tmp/final_video.mp4"
 
     ffmpeg_command = [
         "ffmpeg",
