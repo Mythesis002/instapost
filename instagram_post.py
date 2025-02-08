@@ -39,9 +39,9 @@ def post_reel():
             {
                 "role": "system",
                 "content": "You are an AI assistant that specializes in converting text descriptions into high-quality, "
-                           "crunchy Instagram headlines for text overlays and detailed image prompts for AI image generation. "
-                           "Your goal is to analyze the given content, extract the key visual elements, and generate a professional, structured image prompt. "
-                           "Additionally, generate a short, crunchy hooking headline (maximum 5 words) that summarizes the image concept."
+                       "crunchy Instagram headlines for text overlays and detailed image prompts for AI image generation. "
+                       "Your goal is to analyze the given content, extract key visual elements, and generate a professional, structured image prompt. "
+                       "Additionally, generate a short, crunchy hooking headline (maximum 5 words) that summarizes the image concept."
             },
             {
                 "role": "user",
@@ -153,4 +153,12 @@ def post_reel():
     else:
         print("❌ Error: Failed to upload the video.")
 
-post_reel()
+# 🔹 Schedule it to run daily at 7 PM UTC (Convert your local time)
+schedule.every().day.at("14:00").do(post_reel)  # 7 PM IST = 14:00 UTC
+
+print("✅ Bot is now running on Render...")
+
+# 🔹 Run the schedule continuously
+while True:
+    schedule.run_pending()
+    time.sleep(60)
