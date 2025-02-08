@@ -168,7 +168,7 @@ def post_reel():
         print("❌ Error: Failed to upload the video.")
 
 # 🔹 Schedule it to run daily at 7 PM UTC (Convert your local time)
-schedule.every().day.at("05:50").do(post_reel)  # 7 PM IST = 14:00 UTC
+schedule.every().day.at("06:00").do(post_reel)  # 7 PM IST = 14:00 UTC
 
 print("✅ Bot is now running on Render...")
 
