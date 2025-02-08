@@ -117,7 +117,8 @@ def post_reel():
         "-shortest",
         temp_merged_video_path
     ]
-    subprocess.run(ffmpeg_command, check=True)
+    subprocess.run(ffmpeg_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True)
+
 
     # 🔹 5. Upload Video to Cloudinary
     cloudinary.config(
