@@ -3,6 +3,7 @@ pillow==11.1.0
 cloudinary==1.42.2
 moviepy==1.0.3
 imageio==2.36.1
+ffmpeg-python
 imageio_ffmpeg==0.6.0
 tqdm==4.67.1
 numpy==1.26.4
