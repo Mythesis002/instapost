@@ -4,8 +4,8 @@ from huggingface_hub import InferenceClient
 from PIL import Image, ImageDraw, ImageFont
 import cloudinary
 import cloudinary.uploader
+import cloudinary.api
 import io
-from moviepy.editor import ImageSequenceClip, AudioFileClip, concatenate_videoclips
 import numpy as np
 import os
 import time
@@ -22,15 +22,24 @@ def post_reel():
     print(f"📅 Running at: {datetime.datetime.now()}")
 
     # 🔹 1. Get Instagram Caption
-    url = "https://instagram-scraper-api2.p.rapidapi.com/v1/posts"
-    querystring = {"username_or_id_or_url": INSTAGRAM_NICHE_ACCOUNT}
+    url = "https://instagram230.p.rapidapi.com/user/posts"
+    querystring = {"username": INSTAGRAM_NICHE_ACCOUNT}
     headers = {
-        "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
-        "x-rapidapi-host": "instagram-scraper-api2.p.rapidapi.com"
+	      "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
+	      "x-rapidapi-host": "instagram230.p.rapidapi.com",
+        "Content-Type": "application/json"
     }
+
     response = requests.get(url, headers=headers, params=querystring)
+
     data = response.json()
-    caption_text = data['data']['items'][0]['caption']['text']
+    if 'items' in data and len(data['items']) > 0:
+        # Access the caption text from the first item in the 'items' list
+        caption_text = data['items'][0]['caption']['text']
+    else:
+        # Handle the case where the expected structure is not found
+        print("Error: Unexpected response structure or empty 'items' list.")
+        print(data)  # Print the response for debugging
 
     # 🔹 2. Generate Headline & Image Prompt
     url = "https://chatgpt-42.p.rapidapi.com/gpt4"
@@ -38,10 +47,14 @@ def post_reel():
         "messages": [
             {
                 "role": "system",
-                "content": "You are an AI assistant that specializes in converting text descriptions into high-quality, "
-                       "crunchy Instagram headlines for text overlays and detailed image prompts for AI image generation. "
-                       "Your goal is to analyze the given content, extract key visual elements, and generate a professional, structured image prompt. "
-                       "Additionally, generate a short, crunchy hooking headline (maximum 5 words) that summarizes the image concept."
+                "content":
+                "You are an AI assistant that specializes in generating high-quality Instagram post elements. "
+                "For any given caption, you must return:\n"
+                "1️⃣ **Instagram Headline**: A detailed short, attention-grabbing headline (min 2lines).\n"
+                "2️⃣ **Image Prompt**: A detailed description of the ideal AI-generated image.\n\n"
+                "Format your response **exactly** like this:\n"
+                "**Headline:** Your catchy headline here\n"
+                "**Image Prompt:** Your detailed image description here"
             },
             {
                 "role": "user",
@@ -51,60 +64,35 @@ def post_reel():
         "web_access": False
     }
     headers = {
-        "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
+        "x-rapidapi-key": "c4149d7f42msh169b1ac1d7c079ep17cebfjsn882b5a92dacd",
         "x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
         "Content-Type": "application/json"
     }
     response = requests.post(url, json=payload, headers=headers)
     response_data = response.json()
+    result_text = response_data.get("result", "").strip()
 
-    # 🔹 Extract Headline & Image Prompt
-    result_text = response_data.get("result", "")
-    headline_match = re.search(r'\*\*Headline:\*\*\n"(.+?)"', result_text)
-    headline = headline_match.group(1) if headline_match else "No headline found"
-    image_prompt_match = re.search(r'\*\*Image Prompt:\*\*\n(.+)', result_text, re.DOTALL)
+
+
+ 
+    headline_pattern = r'\*\*Headline:\*\*\s*(.+)'
+    image_prompt_pattern = r'\*\*Image Prompt:\*\*\s*(.+)'
+
+    headline_match = re.search(headline_pattern, result_text)
+    image_prompt_match = re.search(image_prompt_pattern, result_text)
+
+    headline = headline_match.group(1).strip() if headline_match else "No headline found"
     image_prompt = image_prompt_match.group(1).strip() if image_prompt_match else "No image prompt found"
+
 
     # 🔹 3. Generate Image & Create Video
     client = InferenceClient(token="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")
     model = "black-forest-labs/FLUX.1-dev"
-    image_data = client.text_to_image(image_prompt, model=model)
+    image = client.text_to_image(image_prompt, model=model)
 
-    # 🔹 Resize & Apply Background
-    image = image_data.resize((900, 900))
-    background = Image.new("RGB", (1080, 1920), (0, 0, 0))
-    background.paste(image, (90, 510))
 
-    # 🔹 Add Headline to Image
-    draw = ImageDraw.Draw(background)
-    try:
-        font = ImageFont.truetype("arial.ttf", 40)
-    except:
-        font = ImageFont.load_default()
 
-    text_width = draw.textlength(headline, font=font)
-    text_x = (1080 - text_width) // 2
-    text_y = 320
-    draw.rectangle(
-        [(text_x - 20, text_y - 20), (text_x + text_width + 20, text_y + 80)],
-        fill="black"
-    )
-    draw.text((text_x, text_y), headline, font=font, fill="white")
 
-    # 🔹 Convert Image to Video
-    image_bytes = io.BytesIO()
-    background.save(image_bytes, format='PNG')
-    image_bytes.seek(0)
-    imaget = Image.open(image_bytes).convert("RGB")
-    image_np = np.array(imaget)
-    video_clip = ImageSequenceClip([image_np] * 15, fps=1)
-
-    # 🔹 4. Merge Video with Music
-    music_path = "ReelAudio.mp3"
-    audio_clip = AudioFileClip(music_path)
-    final_clip = video_clip.set_audio(audio_clip)
-    temp_merged_video_path = "temp_merged_video.mp4"
-    final_clip.write_videofile(temp_merged_video_path, codec="libx264", fps=24, logger=None)
 
     # 🔹 5. Upload Video to Cloudinary
     cloudinary.config(
@@ -112,22 +100,41 @@ def post_reel():
         api_key="797349366477678",
         api_secret="9HUrfG_i566NzrCZUVxKyCHTG9U"
     )
-    upload_result = cloudinary.uploader.upload_large(
-        temp_merged_video_path,
-        resource_type="video",
-        chunk_size=6000000,
-        folder="generated_images"
-    )
+    # Convert the PIL Image to bytes
+    image_bytes = io.BytesIO()
+    image.save(image_bytes, format='PNG')  # Or whichever format you prefer
+    image_bytes.seek(0)  # Reset the stream position
 
-    os.remove(temp_merged_video_path)
 
-    final_url = upload_result["secure_url"]
-    print("✅ Final Instagram Reel URL:", final_url)
+    upload_result = cloudinary.uploader.upload(image_bytes.getvalue(), folder="Mythesis_images")
+    public_id = upload_result["public_id"].replace("/", ":")
+
+    video_url = cloudinary.CloudinaryVideo("bgvideo").video(transformation=[
+    {'overlay': "black_bg_9_16"},
+    {'flags': "layer_apply",'width': 2200, 'crop': "fit"},
+    {'overlay': public_id},
+    {'flags': "layer_apply",'width': 1920, 'crop': "fit"},
+    {'overlay': "audio:reelaudio"},
+    {'flags': "layer_apply"},
+    {'width': 500, 'crop': "scale"},
+    {'overlay': {'font_family': "arial", 'font_size': 18, 'font_weight': "bold", 'text': "Style", 'text': headline},'color': "white",'background':"black", 'width': 400, 'crop': "fit"},  
+    {'flags': "layer_apply", 'gravity': "north", 'y': 500},
+    {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Style", 'text': "    autoFeed_tech"},'color': "black",'background':"skyblue", 'radius': 20, 'x': 20,'y': 20, 'width': 400, 'crop': "fit"},  # Added color: "white"
+    {'flags': "layer_apply", 'gravity': "north", 'y': 110},
+    {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "Style", 'text': "This page is totally handled by ai,which provides trending tech news faster than human!- Follow us Now"},'color': "white",'width': 380, 'crop': "fit"},  # Added color: "white"
+    {'flags': "layer_apply", 'gravity': "north", 'y': 160}
+
+    ])
+
+    match = re.search(r'/webm"><source src="(.*\.mp4)"', str(video_url))
+    mp4_url = match.group(1)
+    print(mp4_url)
+
 
     # 🔹 6. Upload & Publish the Instagram Reel
     upload_url = f"https://graph.facebook.com/v18.0/{INSTAGRAM_ACCOUNT_ID}/media"
     payload = {
-        "video_url": final_url,
+        "video_url": mp4_url,
         "caption": caption_text,
         "media_type": "REELS",
         "access_token": ACCESS_TOKEN
@@ -138,10 +145,11 @@ def post_reel():
     print(response_data)
 
     media_id = response_data.get("id")
+    print(media_id)
 
     if media_id:
         print("⏳ Waiting for Instagram to process the video...")
-        time.sleep(10)
+        time.sleep(40)
 
         publish_url = f"https://graph.facebook.com/v18.0/{INSTAGRAM_ACCOUNT_ID}/media_publish"
         publish_payload = {
