@@ -121,8 +121,10 @@ def post_reel():
     {'flags': "layer_apply", 'gravity': "north", 'y': 500},
     {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Style", 'text': "    autoFeed_tech"},'color': "black",'background':"skyblue", 'radius': 20, 'x': 20,'y': 20, 'width': 400, 'crop': "fit"},  # Added color: "white"
     {'flags': "layer_apply", 'gravity': "north", 'y': 110},
-    {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "Style", 'text': "This page is totally handled by ai,which provides trending tech news faster than human!- Follow us Now"},'color': "white",'width': 380, 'crop': "fit"},  # Added color: "white"
-    {'flags': "layer_apply", 'gravity': "north", 'y': 160}
+    {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "Style", 'text': "This page is totally handled by ai,which provides trending tech news faster than human!- Follow for fastest updates"},'color': "white",'width': 380, 'crop': "fit"},  # Added color: "white"
+    {'flags': "layer_apply", 'gravity': "north", 'y': 160},
+    {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "Style", 'text': "full details in caption"},'color': "white",'width': 300, 'crop': "fit"},  # Added color: "white"
+    {'flags': "layer_apply", 'gravity': "south", 'y': 130}
 
     ])
 
