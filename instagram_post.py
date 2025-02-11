@@ -50,7 +50,7 @@ def post_reel():
                 "content":
                 "You are an AI assistant that specializes in generating high-quality Instagram post elements. "
                 "For any given caption, you must return:\n"
-                "1️⃣ **Instagram Headline**: A detailed short, attention-grabbing headline (min 2lines).\n"
+                "1️⃣ **Instagram Headline**: A detailed brief, attention-grabbing headline (min 5 lines).\n"
                 "2️⃣ **Image Prompt**: A detailed description of the ideal AI-generated image.\n\n"
                 "Format your response **exactly** like this:\n"
                 "**Headline:** Your catchy headline here\n"
