@@ -50,7 +50,7 @@ def post_reel():
                 "content":
                 "You are an AI assistant that specializes in generating high-quality Instagram post elements. "
                 "For any given caption, you must return:\n"
-                "1️⃣ **Instagram Headline**: A detailed brief, attention-grabbing headline (min 5 lines).\n"
+                "1️⃣ **Instagram Headline**: A detailed short, attention-grabbing headline (min 2lines).\n"
                 "2️⃣ **Image Prompt**: A detailed description of the ideal AI-generated image.\n\n"
                 "Format your response **exactly** like this:\n"
                 "**Headline:** Your catchy headline here\n"
@@ -74,7 +74,7 @@ def post_reel():
 
 
 
- 
+
     headline_pattern = r'\*\*Headline:\*\*\s*(.+)'
     image_prompt_pattern = r'\*\*Image Prompt:\*\*\s*(.+)'
 
@@ -117,7 +117,7 @@ def post_reel():
     {'overlay': "audio:reelaudio"},
     {'flags': "layer_apply"},
     {'width': 500, 'crop': "scale"},
-    {'overlay': {'font_family': "arial", 'font_size': 18, 'font_weight': "bold", 'text': "Style", 'text': headline},'color': "white",'background':"black", 'width': 400, 'crop': "fit"},  
+    {'overlay': {'font_family': "arial", 'font_size': 18, 'font_weight': "bold", 'text': "Style", 'text': headline},'color': "white",'background':"black", 'width': 400, 'crop': "fit"},
     {'flags': "layer_apply", 'gravity': "north", 'y': 500},
     {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Style", 'text': "    autoFeed_tech"},'color': "black",'background':"skyblue", 'radius': 20, 'x': 20,'y': 20, 'width': 400, 'crop': "fit"},  # Added color: "white"
     {'flags': "layer_apply", 'gravity': "north", 'y': 110},
@@ -151,7 +151,7 @@ def post_reel():
 
     if media_id:
         print("⏳ Waiting for Instagram to process the video...")
-        time.sleep(40)
+        time.sleep(60)
 
         publish_url = f"https://graph.facebook.com/v18.0/{INSTAGRAM_ACCOUNT_ID}/media_publish"
         publish_payload = {
