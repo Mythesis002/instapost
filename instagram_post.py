@@ -15,7 +15,7 @@ import datetime
 # 🔹 Instagram Credentials
 ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9AlupOjbJ5xYSTBrMIMTVtu9n530I3ZC2JZBuZBpCDzHyjI7ngh8EtCrSvUho9VGZB9Xdxt5JLGNrHwfDsSIqtvxFjefG2t2JsgJpqfZAMCjO8AURp79mU0WAaLA7R"
 INSTAGRAM_ACCOUNT_ID = "17841468918737662"
-INSTAGRAM_NICHE_ACCOUNT = "evolving.ai"
+INSTAGRAM_NICHE_ACCOUNT = "factbrainy"
 
 def post_reel():
     """Uploads and posts an Instagram Reel automatically."""
@@ -25,23 +25,64 @@ def post_reel():
     url = "https://instagram230.p.rapidapi.com/user/posts"
     querystring = {"username": INSTAGRAM_NICHE_ACCOUNT}
     headers = {
-	      "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
-	      "x-rapidapi-host": "instagram230.p.rapidapi.com",
+        "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
+        "x-rapidapi-host": "instagram230.p.rapidapi.com",
         "Content-Type": "application/json"
     }
 
-    response = requests.get(url, headers=headers, params=querystring)
+    try:
+        response = requests.get(url, headers=headers, params=querystring)
+        response.raise_for_status()  # Raise an error for bad status codes
+        data = response.json()
 
-    data = response.json()
-    if 'items' in data and len(data['items']) > 0:
-        # Access the caption text from the first item in the 'items' list
-        caption_text = data['items'][0]['caption']['text']
-    else:
-        # Handle the case where the expected structure is not found
-        print("Error: Unexpected response structure or empty 'items' list.")
-        print(data)  # Print the response for debugging
+        if 'items' in data and len(data['items']) > 0:
+            # Access the caption text from the first item in the 'items' list
+            caption_text = data['items'][0]['caption']['text']
 
-    # 🔹 2. Generate Headline & Image Prompt
+            # Check if 'music_metadata' and 'music_canonical_id' exist
+            if 'music_metadata' in data['items'][0] and 'music_canonical_id' in data['items'][0]['music_metadata']:
+                music_canonical_id = data['items'][0]['music_metadata']['music_canonical_id']
+            else:
+                # Use the default ID if 'music_canonical_id' is missing or invalid
+                music_canonical_id = "18149596924049565"
+
+                print("Music Canonical ID:", music_canonical_id)
+        else:
+            # Handle the case where the expected structure is not found
+            print("Error: Unexpected response structure or empty 'items' list.")
+            print(data)  # Print the response for debugging
+            return
+        url = "https://instagram-scraper-api2.p.rapidapi.com/v1/audio_info"
+
+        querystring = {"audio_canonical_id":music_canonical_id}
+
+        headers = {
+         	"x-rapidapi-key": "c4149d7f42msh169b1ac1d7c079ep17cebfjsn882b5a92dacd",
+	        "x-rapidapi-host": "instagram-scraper-api2.p.rapidapi.com"
+        }
+
+        response = requests.get(url, headers=headers, params=querystring)
+        response.raise_for_status()  # Raise an error for bad status codes
+        data = response.json()
+
+        print(response.json())
+        music_url = data['data']['download_url']
+        print(music_url)
+        cloudinary.config(
+                cloud_name="dkr5qwdjd",
+                api_key="797349366477678",
+                api_secret="9HUrfG_i566NzrCZUVxKyCHTG9U"
+            )
+        upload_result = cloudinary.uploader.upload(music_url, resource_type="video")
+
+    # 🔹 Print Public ID
+        music_public_id = upload_result.get("public_id")
+        print(f"✅ Uploaded Successfully! Public ID: {music_public_id}")
+
+    except requests.exceptions.RequestException as e:
+        print(f"❌ Failed to fetch Instagram caption: {e}")
+
+
     url = "https://chatgpt-42.p.rapidapi.com/gpt4"
     payload = {
         "messages": [
@@ -64,7 +105,7 @@ def post_reel():
         "web_access": False
     }
     headers = {
-        "x-rapidapi-key": "c4149d7f42msh169b1ac1d7c079ep17cebfjsn882b5a92dacd",
+        "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
         "x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
         "Content-Type": "application/json"
     }
@@ -108,13 +149,14 @@ def post_reel():
 
     upload_result = cloudinary.uploader.upload(image_bytes.getvalue(), folder="Mythesis_images")
     public_id = upload_result["public_id"].replace("/", ":")
-
+    
+    music_id = music_public_id 
     video_url = cloudinary.CloudinaryVideo("bgvideo").video(transformation=[
     {'overlay': "black_bg_9_16"},
     {'flags': "layer_apply",'width': 2200, 'crop': "fit"},
     {'overlay': public_id},
     {'flags': "layer_apply",'width': 1920, 'crop': "fit"},
-    {'overlay': "audio:reelaudio"},
+    {"overlay": f"audio:{music_id}", "start_offset": "40", "duration": "15"},
     {'flags': "layer_apply"},
     {'width': 500, 'crop': "scale"},
     {'overlay': {'font_family': "arial", 'font_size': 18, 'font_weight': "bold", 'text': "Style", 'text': headline},'color': "white",'background':"black", 'width': 400, 'crop': "fit"},
