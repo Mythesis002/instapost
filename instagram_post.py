@@ -34,13 +34,13 @@ def post_reel():
         response = requests.get(url, headers=headers, params=querystring)
         response.raise_for_status()  # Raise an error for bad status codes
         data = response.json()
-        # Check if 'items' is in data and it's not empty before accessing its elements
-        if 'items' in data and data['items'] and isinstance(data['items'], list) and len(data['items']) > 0:
+
+        if 'items' in data and len(data['items']) > 0:
             # Access the caption text from the first item in the 'items' list
             caption_text = data['items'][0]['caption']['text']
 
             # Check if 'music_metadata' and 'music_canonical_id' exist
-            if 'music_metadata' in data['items'][0] and data['items'][0]['music_metadata'] and 'music_canonical_id' in data['items'][0]['music_metadata']:
+            if 'music_metadata' in data['items'][0] and 'music_canonical_id' in data['items'][0]['music_metadata']:
                 music_canonical_id = data['items'][0]['music_metadata']['music_canonical_id']
             else:
                 # Use the default ID if 'music_canonical_id' is missing or invalid
@@ -149,7 +149,7 @@ def post_reel():
 
     upload_result = cloudinary.uploader.upload(image_bytes.getvalue(), folder="Mythesis_images")
     public_id = upload_result["public_id"].replace("/", ":")
-    
+
     music_id = music_public_id 
     video_url = cloudinary.CloudinaryVideo("bgvideo").video(transformation=[
     {'overlay': "black_bg_9_16"},
@@ -193,6 +193,7 @@ def post_reel():
 
     if media_id:
         print("⏳ Waiting for Instagram to process the video...")
+        time.sleep(60)
         time.sleep(140)
 
         publish_url = f"https://graph.facebook.com/v18.0/{INSTAGRAM_ACCOUNT_ID}/media_publish"
