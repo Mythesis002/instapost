@@ -15,7 +15,7 @@ import datetime
 # 🔹 Instagram Credentials
 ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9AlupOjbJ5xYSTBrMIMTVtu9n530I3ZC2JZBuZBpCDzHyjI7ngh8EtCrSvUho9VGZB9Xdxt5JLGNrHwfDsSIqtvxFjefG2t2JsgJpqfZAMCjO8AURp79mU0WAaLA7R"
 INSTAGRAM_ACCOUNT_ID = "17841468918737662"
-INSTAGRAM_NICHE_ACCOUNT = "factbrainy"
+INSTAGRAM_NICHE_ACCOUNT = "evolving.ai"
 
 def post_reel():
     """Uploads and posts an Instagram Reel automatically."""
