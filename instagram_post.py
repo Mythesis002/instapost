@@ -152,22 +152,42 @@ def post_reel():
 
     music_id = music_public_id 
     video_url = cloudinary.CloudinaryVideo("bgvideo").video(transformation=[
-    {'overlay': "black_bg_9_16"},
-    {'flags': "layer_apply",'width': 2200, 'crop': "fit"},
-    {'overlay': public_id},
-    {'flags': "layer_apply",'width': 1920, 'crop': "fit"},
-    {"overlay": f"audio:{music_id}", "start_offset": "40", "duration": "15"},
-    {'flags': "layer_apply"},
-    {'width': 500, 'crop': "scale"},
-    {'overlay': {'font_family': "arial", 'font_size': 18, 'font_weight': "bold", 'text': "Style", 'text': headline},'color': "white",'background':"black", 'width': 400, 'crop': "fit"},
-    {'flags': "layer_apply", 'gravity': "north", 'y': 500},
-    {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Style", 'text': "    autoFeed_tech"},'color': "black",'background':"skyblue", 'radius': 20, 'x': 20,'y': 20, 'width': 400, 'crop': "fit"},  # Added color: "white"
-    {'flags': "layer_apply", 'gravity': "north", 'y': 110},
-    {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "Style", 'text': "This page is totally handled by ai,which provides trending tech news faster than human!- Follow for fastest updates"},'color': "white",'width': 380, 'crop': "fit"},  # Added color: "white"
-    {'flags': "layer_apply", 'gravity': "north", 'y': 160},
-    {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "Style", 'text': "full details in caption"},'color': "white",'width': 300, 'crop': "fit"},  # Added color: "white"
-    {'flags': "layer_apply", 'gravity': "south", 'y': 130}
-
+    # Main Image Overlay (Product/Feature Image)
+      {
+      'overlay': public_id,
+      'width': 1080,
+      'height': 1920,
+      'crop': "pad",
+      'background': "auto:predominant_gradient:2:diagonal_desc"
+      },
+      {'effect': 'gen_restore'},
+      {'flags': "layer_apply", 'width': 1920,'crop': "pad"},
+      {"overlay": f"audio:{music_id}", "start_offset": "40", "duration": "15"},
+      {'flags': "layer_apply"},
+      {'width': 500, 'crop': "scale"},
+        # Corrected text overlay parameters
+      {
+      'overlay': {
+      'font_family': "arial",
+      'font_size': 25,
+      'font_weight': "bold",
+      'gravity': "center",
+      'text': summary
+      },
+       'color': "white",
+       'background': "black",
+       'width': 400,
+       'crop': "fit",
+       'gravity': "center",  # Align text to the center
+       'border': "20px_solid_black"  # Padding effect using a border
+       },
+       {'flags': "layer_apply", 'gravity': "north", 'y': 500},
+       {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Thetrendsfeed"}, 'color': "black", 'background': "skyblue", 'radius': 20, 'x': 20, 'y': 20, 'width': 400, 'crop': "fit"},
+       {'flags': "layer_apply", 'gravity': "north", 'y': 110},
+       {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "This page is totally handled by ai, which provides trending tech news faster than human!"}, 'color': "white", 'width': 300, 'crop': "fit"},
+       {'flags': "layer_apply", 'gravity': "north", 'y': 160},
+       {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "full details in caption"}, 'color': "white", 'width': 300, 'crop': "fit"},
+       {'flags': "layer_apply", 'gravity': "south", 'y': 150}
     ])
 
     match = re.search(r'/webm"><source src="(.*\.mp4)"', str(video_url))
