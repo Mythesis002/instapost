@@ -162,6 +162,7 @@ def post_reel():
       'background': "auto:predominant_gradient:2:diagonal_desc"
       },
       {'effect': 'gen_restore'},
+      {'effect': "fade:2000"},	    
       {
       'flags': "layer_apply",
       'width': 1080,
@@ -183,6 +184,7 @@ def post_reel():
       'text': headline
       },
       'color': "white",
+      'effect': "fade:2000",
       'background': "black",
       'width': 400,
       'crop': "fit",
@@ -192,11 +194,11 @@ def post_reel():
     # Padding effect using a border
       },
       {'flags': "layer_apply", 'gravity': "north", 'y': 500},
-      {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Thetrendsfeed"}, 'color': "black", 'background': "skyblue",'border': "3px_solid_skyblue", 'radius': 2, 'x': 20, 'y': 20, 'width': 400, 'crop': "fit"},
+      {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Thetrendsfeed"}, 'color': "black", 'background': "skyblue",'border': "3px_solid_skyblue", 'radius': 2, 'x': 20, 'y': 20, 'width': 400,'effect': "fade:2000", 'crop': "fit"},
       {'flags': "layer_apply", 'gravity': "north", 'y': 50},
-      {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "This page is totally handled by ai, which provides trending tech news faster than human!"}, 'color': "white", 'width': 300, 'crop': "fit"},
+      {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "This page is totally handled by ai, which provides trending tech news faster than human!"}, 'color': "white", 'width': 300,'effect': "fade:2000", 'crop': "fit"},
       {'flags': "layer_apply", 'gravity': "north", 'y': 90},
-      {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "full details in caption"}, 'color': "white", 'width': 300, 'crop': "fit"},
+      {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "full details in caption"}, 'color': "white", 'width': 300,'effect': "fade:2000", 'crop': "fit"},
       {'flags': "layer_apply", 'gravity': "south", 'y': 150}
     ])
 
