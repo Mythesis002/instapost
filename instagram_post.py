@@ -171,6 +171,7 @@ def post_reel():
       'y': -130  # Moves image 100 pixels up
       },
       {"overlay": f"audio:{music_id}", "start_offset": "40", "duration": "15"},
+      {'effect':"volume:250"},
       {'flags': "layer_apply"},
       {'width': 500, 'crop': "scale"},
         # Corrected text overlay parameters
