@@ -156,13 +156,16 @@ def post_reel():
     # Main Image Overlay (Product/Feature Image)
       {
       'overlay': public_id,
-      'width': 1080,
-      'height': 1920,
+      'width': 400,
+      'height': 400,
       'crop': "pad",
-      'background': "auto:predominant_gradient:2:diagonal_desc"
+      'y': 130,
+      'background': "#000000", 'gravity': "north"
       },
+      {'background': "#000000", 'gravity': "north", 'height': 1920, 'width': 1080, 'crop': "pad"},
+      {'effect': "gradient_fade:symmetric_pad", 'x': "0.5"},
       {'effect': 'gen_restore'},
-      {'effect': "fade:2000"},	    
+      {'effect': "fade:2000"},
       {
       'flags': "layer_apply",
       'width': 1080,
@@ -170,37 +173,29 @@ def post_reel():
       'gravity': "center",
       'y': -130  # Moves image 100 pixels up
       },
-      {"overlay": f"audio:{music_id}", "start_offset": "40", "duration": "15"},
+      {"overlay": f"audio:{music_public_id}", "start_offset": "40", "duration": "15"},
       {'effect':"volume:1000"},
       {'flags': "layer_apply"},
       {'width': 500, 'crop': "scale"},
+
         # Corrected text overlay parameters
       {
       'overlay': {
-      'font_family': "arial",
-      'font_size': 25,
-      'font_weight': "bold",
+      'font_family': "georgia",
+      'font_size': 30,
       'gravity': "center",
       'y': -30,
+      'text_align': "center",
       'text': headline
       },
       'color': "white",
       'effect': "fade:2000",
-      'background': "black",
-      'width': 400,
+      'text_align': "center",
+      'width': 450,
       'crop': "fit",
       'gravity': "center",
-      'y': -30,# Align text to the center
-      'border': "20px_solid_black",
-    # Padding effect using a border
-      },
-      {'flags': "layer_apply", 'gravity': "north", 'y': 500},
-      {'overlay': {'font_family': "arial", 'font_size': 20, 'font_weight': "bold", 'text': "Thetrendsfeed"}, 'color': "black", 'background': "skyblue",'border': "3px_solid_skyblue", 'radius': 2, 'x': 20, 'y': 20, 'width': 400,'effect': "fade:2000", 'crop': "fit"},
-      {'flags': "layer_apply", 'gravity': "north", 'y': 50},
-      {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "This page is totally handled by ai, which provides trending tech news faster than human!"}, 'color': "white", 'width': 300,'effect': "fade:2000", 'crop': "fit"},
-      {'flags': "layer_apply", 'gravity': "north", 'y': 90},
-      {'overlay': {'font_family': "arial", 'font_size': 12, 'font_weight': "bold", 'text': "full details in caption"}, 'color': "white", 'width': 300,'effect': "fade:2000", 'crop': "fit"},
-      {'flags': "layer_apply", 'gravity': "south", 'y': 150}
+      'y': 100,# Align text to the center
+      }
     ])
 
     match = re.search(r'/webm"><source src="(.*\.mp4)"', str(video_url))
