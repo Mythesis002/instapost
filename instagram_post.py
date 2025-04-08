@@ -104,7 +104,7 @@ def resumable_upload(request):
 
 if __name__ == "__main__":
     # Define video details
-    video_file = "pg.mp4"  # Replace with actual file path
+    video_file = "video.mov"  # Replace with actual file path
     video_title = "My YouTube Video"
     video_description = "This is an uploaded video using YouTube API."
     video_category = "22"  # Category ID (e.g., 22 = People & Blogs)
