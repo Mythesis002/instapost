@@ -36,7 +36,12 @@ def get_authenticated_service():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
-            creds = flow.run_console()
+            auth_url, _ = flow.authorization_url(prompt='consent')
+            print(f"Please go to this URL: {auth_url}")
+
+            code = input("Enter the authorization code: ")
+            creds = flow.fetch_token(code=code)
+
 
         # Save the credentials for future use
         with open("token.pickle", "wb") as token:
