@@ -75,7 +75,7 @@ url = "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/search_music"
 querystring = {"search_query": music}
 
 headers = {
-    "x-rapidapi-key": "c4149d7f42msh169b1ac1d7c079ep17cebfjsn882b5a92dacd",
+    "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
     "x-rapidapi-host": "real-time-instagram-scraper-api1.p.rapidapi.com"
 }
 
