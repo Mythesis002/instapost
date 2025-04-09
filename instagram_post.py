@@ -32,7 +32,7 @@ INSTAGRAM_ACCOUNT_ID = "17841468918737662"
 
 # ✅ Step 2: Generate Audio using ElevenLabs
 API_VOICE_KEY = "sk_10d0d4fbc3580baf5146d2463339043dd26d0b89fd9d77a0"
-VOICE_ID = "uZMYHCBjuF62xGy65059"
+VOICE_ID = "m977HV2TDqAAgMuLtvWa"
 
 url = "https://ai-deepsearch.p.rapidapi.com/api/search"
 
@@ -157,10 +157,10 @@ headers = {
 data = {
     "text": summar,
     "voice_settings": {
-        "speed": 1.2,
-        "stability": 0.3,
+        "speed": 1.0,
+        "stability": 0.5,
         "similarity_boost": 0.8,
-        "style_exaggeration": 0.7
+        "style_exaggeration": 0.1
 
     },
     "model_id": "eleven_multilingual_v2",
