@@ -61,7 +61,9 @@ try:
     # Remove any unwanted `**` or extra formatting around the result
     headline = headline_match.group(1).strip().replace('**', '') if headline_match else "No headline found"
     summary = summary_match.group(1).strip().replace('**', '') if summary_match else "No summary found"
-    music = music_match.group(1).strip().replace('**', '') if music_match else "No music found"
+    full_music = music_match.group(1).strip().replace('**', '') if music_match else "No music found"
+    music_words = full_music.split()
+    music = ' '.join(music_words[:2]) if music_words else "No music found"
 
     print("Headline:", headline)
     print("Summary:", summary)
