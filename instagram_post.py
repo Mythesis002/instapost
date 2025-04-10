@@ -155,7 +155,7 @@ headers = {
 }
 
 data = {
-    "text": summar,
+    "text": summary,
     "voice_settings": {
         "speed": 1.0,
         "stability": 0.5,
