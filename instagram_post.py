@@ -32,12 +32,12 @@ INSTAGRAM_ACCOUNT_ID = "17841468918737662"
 
 # ✅ Step 2: Generate Audio using ElevenLabs
 API_VOICE_KEY = "sk_aa9b2128c2fb988e43c4969e0327572f8fe305f12c1437a3"
-VOICE_ID = "m977HV2TDqAAgMuLtvWa"
+VOICE_ID = "QkXme8AqeQYABrRfJT20"
 
 url = "https://ai-deepsearch.p.rapidapi.com/api/search"
 
 payload = {
-    "query": "Find the most viral, outrageous, or controversial IPL 2025 gossip or incident that would break the internet today. Create hyper-sensational fake news that feels so real people will argue about it in the comments. It should feel like a leaked scandal, absurd stat, or wild drama involving cricketers, owners, or fans. Format the response as follows: Headline: [Start with an explosive, highly clickable line that shocks or confuses. Use caps, emojis, slang, and exaggeration — make it look like a Reel title.] Summary: A 3–4 line Hindi explanation written like a chaotic rant or gossip. Be funny, dramatic, and unexpected. Mix Gen-Z slang, shocking punchlines, emoji reactions, and a twist. Keep the flow fast and addictive — like a friend telling you wild tea.] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
+    "query": "Find the most viral, trending, and controversial news today that is making waves on social media in India. Focus on shocking events, celebrity controversies, bizarre incidents, and highly engaging content that people love. Prioritize news from Instagram, Twitter, and YouTube trends, ensuring it's eye-catching and has maximum engagement. Format the response as follows: Headline: [Insert an eye-catching, bold, or sensational headline but make it fake news] Summary: [Provide a concise, punchy summary in Hindi, written in Varun Mayya’s style—casual, witty, and loaded with Gen-Z slang, emojis, and dramatic flair. Example: 'so,IT इंडस्ट्री में भूचाल आने वाला है!'] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
 }
 headers = {
     "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
@@ -64,6 +64,7 @@ try:
     full_music = music_match.group(1).strip().replace('**', '') if music_match else "No music found"
     music_words = full_music.split()
     music = ' '.join(music_words[:2]) if music_words else "No music found"
+
 
     print("Headline:", headline)
     print("Summary:", summary)
@@ -147,7 +148,7 @@ except requests.exceptions.RequestException as e:
     thumbnail_url = None
 
 # VOICE GENERATION
-summar = summary;
+
 
 headers = {
     "xi-api-key": API_VOICE_KEY,
@@ -157,10 +158,10 @@ headers = {
 data = {
     "text": summary,
     "voice_settings": {
-        "speed": 1.0,
-        "stability": 0.5,
+        "speed": 1.2,
+        "stability": 0.3,
         "similarity_boost": 0.8,
-        "style_exaggeration": 0.1
+        "style_exaggeration": 0.7
 
     },
     "model_id": "eleven_multilingual_v2",
@@ -211,7 +212,7 @@ video_url = cloudinary.CloudinaryVideo("bgvideo1").video(transformation=[
       'y': -130  # Moves image 100 pixels up
       },
 
-      {"overlay": f"audio:{cloudinary_public_id}",  "duration": "30"},
+      {"overlay": f"audio:{cloudinary_public_id}"},
       {'effect':"volume:100"},
       {'flags': "layer_apply"},
       {'width': 500, 'crop': "scale"},
