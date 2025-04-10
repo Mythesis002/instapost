@@ -31,7 +31,7 @@ ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9
 INSTAGRAM_ACCOUNT_ID = "17841468918737662"
 
 # ✅ Step 2: Generate Audio using ElevenLabs
-API_VOICE_KEY = "sk_10d0d4fbc3580baf5146d2463339043dd26d0b89fd9d77a0"
+API_VOICE_KEY = "sk_aa9b2128c2fb988e43c4969e0327572f8fe305f12c1437a3"
 VOICE_ID = "m977HV2TDqAAgMuLtvWa"
 
 url = "https://ai-deepsearch.p.rapidapi.com/api/search"
