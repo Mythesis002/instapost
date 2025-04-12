@@ -30,12 +30,7 @@ RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9AlupOjbJ5xYSTBrMIMTVtu9n530I3ZC2JZBuZBpCDzHyjI7ngh8EtCrSvUho9VGZB9Xdxt5JLGNrHwfDsSIqtvxFjefG2t2JsgJpqfZAMCjO8AURp79mU0WAaLA7R"
 INSTAGRAM_ACCOUNT_ID = "17841468918737662"
 
-# ✅ Step 2: Generate Audio using ElevenLabs
-API_VOICE_KEY = "sk_aa9b2128c2fb988e43c4969e0327572f8fe305f12c1437a3"
-VOICE_ID = "QkXme8AqeQYABrRfJT20"
-
 url = "https://ai-deepsearch.p.rapidapi.com/api/search"
-
 payload = {
     "query": "Find the most viral, trending, and controversial news today that is making waves on social media in India. Focus on shocking events, celebrity controversies, bizarre incidents, and highly engaging content that people love. Prioritize news from Instagram, Twitter, and YouTube trends, ensuring it's eye-catching and has maximum engagement. Format the response as follows: Headline: [Insert an eye-catching, bold, or sensational headline but make it fake news] Summary: [Provide a concise, punchy summary in Hindi, written in Varun Mayya’s style—casual, witty, and loaded with Gen-Z slang, emojis, and dramatic flair. Example: 'so,IT इंडस्ट्री में भूचाल आने वाला है!'] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
 }
@@ -44,7 +39,6 @@ headers = {
     "x-rapidapi-host": "ai-deepsearch.p.rapidapi.com",
     "Content-Type": "application/json"
 }
-
 try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()  # Raise an error for bad status codes
@@ -74,14 +68,12 @@ except requests.exceptions.RequestException as e:
     print("Error:", e)
 
 url = "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/search_music"
-
 querystring = {"search_query": music}
 
 headers = {
     "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
     "x-rapidapi-host": "real-time-instagram-scraper-api1.p.rapidapi.com"
 }
-
 response = requests.get(url, headers=headers, params=querystring)
 
 if response.status_code == 200:
@@ -147,47 +139,8 @@ except requests.exceptions.RequestException as e:
     print(f"❌ Failed to search for images: {e}")
     thumbnail_url = None
 
-# VOICE GENERATION
 
 
-headers = {
-    "xi-api-key": API_VOICE_KEY,
-    "Content-Type": "application/json"
-}
-
-data = {
-    "text": summary,
-    "voice_settings": {
-        "speed": 1.2,
-        "stability": 0.3,
-        "similarity_boost": 0.8,
-        "style_exaggeration": 0.7
-
-    },
-    "model_id": "eleven_multilingual_v2",
-    "output_format": "mp3"
-}
-
-response = requests.post(f"https://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}", headers=headers, json=data)
-
-if response.status_code == 200:
-    print("✅ Audio Generated Successfully!")
-
-    # ✅ Step 3: Upload Audio Directly to Cloudinary
-    audio_file = response.content  # Get audio content
-
-    upload_response = cloudinary.uploader.upload(
-        file=audio_file,
-        resource_type="video",  # Cloudinary treats audio files as "video"
-        format="mp3",
-    )
-    cloudinary_url = upload_response["secure_url"]
-    cloudinary_public_id = upload_response["public_id"]
-
-    print(f"🌍 Cloudinary URL: {cloudinary_url}")
-    print(f"📂 Cloudinary Public ID: {cloudinary_public_id}")
-else:
-    print("❌ Error Generating Audio:", response.text)
 
 
 video_url = cloudinary.CloudinaryVideo("bgvideo1").video(transformation=[
@@ -212,13 +165,8 @@ video_url = cloudinary.CloudinaryVideo("bgvideo1").video(transformation=[
       'y': -130  # Moves image 100 pixels up
       },
 
-      {"overlay": f"audio:{cloudinary_public_id}"},
+      {"overlay": f"audio:{music_public_id}"},
       {'effect':"volume:100"},
-      {'flags': "layer_apply"},
-      {'width': 500, 'crop': "scale"},
-
-      {"overlay": f"audio:{music_public_id}", "start_offset": "45", "duration": "30"},
-      {'effect':"volume:-90"},
       {'flags': "layer_apply"},
       {'width': 500, 'crop': "scale"},
 
