@@ -35,7 +35,7 @@ payload = {
     "query": "Find the most viral, trending, and controversial news today that is making waves on social media in India. Focus on shocking events, celebrity controversies, bizarre incidents, and highly engaging content that people love. Prioritize news from Instagram, Twitter, and YouTube trends, ensuring it's eye-catching and has maximum engagement. Format the response as follows: Headline: [Insert an eye-catching, bold, or sensational headline but make it fake news] Summary: [Provide a concise, punchy summary in Hindi, written in Varun Mayya’s style—casual, witty, and loaded with Gen-Z slang, emojis, and dramatic flair. Example: 'so,IT इंडस्ट्री में भूचाल आने वाला है!'] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
 }
 headers = {
-    "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
+    "x-rapidapi-key": "bc4551ab84msh6733c61fc21c591p1d72c2jsnad99d9c3dd43",
     "x-rapidapi-host": "ai-deepsearch.p.rapidapi.com",
     "Content-Type": "application/json"
 }
@@ -104,7 +104,7 @@ url = "https://google-search72.p.rapidapi.com/imagesearch"
 querystring = {"q": headline, "gl": "in", "lr": "lang_en", "num": "1", "start": "0"}
 
 headers = {
-    "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
+    "x-rapidapi-key": "bc4551ab84msh6733c61fc21c591p1d72c2jsnad99d9c3dd43",
     "x-rapidapi-host": "google-search72.p.rapidapi.com"
 }
 
