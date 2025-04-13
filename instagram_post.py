@@ -125,7 +125,7 @@ try:
             api_key="797349366477678",
             api_secret="9HUrfG_i566NzrCZUVxKyCHTG9U"
         )
-        upload_result = cloudinary.uploader.upload(thumbnail_url, folder="Mythesis_images")
+        upload_result = cloudinary.uploader.upload(thumbnail_url, folder="Mythesis_images",format="mp3")
 
         # Get image URL from Cloudinary
         public_id = upload_result.get("public_id", "").replace("/", ":")
