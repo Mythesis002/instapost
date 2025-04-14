@@ -89,7 +89,7 @@ if response.status_code == 200:
                     api_key="797349366477678",
                     api_secret="9HUrfG_i566NzrCZUVxKyCHTG9U"
         )
-        upload_result = cloudinary.uploader.upload(first_audio_url, resource_type="video")
+        upload_result = cloudinary.uploader.upload(first_audio_url, resource_type="video",format="mp3")
 
                 # 🔹 Print Public ID
         music_public_id = upload_result.get("public_id")
@@ -125,7 +125,7 @@ try:
             api_key="797349366477678",
             api_secret="9HUrfG_i566NzrCZUVxKyCHTG9U"
         )
-        upload_result = cloudinary.uploader.upload(thumbnail_url, folder="Mythesis_images",format="mp3")
+        upload_result = cloudinary.uploader.upload(thumbnail_url, folder="Mythesis_images")
 
         # Get image URL from Cloudinary
         public_id = upload_result.get("public_id", "").replace("/", ":")
