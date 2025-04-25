@@ -30,19 +30,28 @@ RETRIABLE_STATUS_CODES = [500, 502, 503, 504]
 ACCESS_TOKEN = "EAAWYAavlRa4BO8OE7Ho6gtx4a85DRgNMc59ZCpAdsHXNJnbZABREkXovZCKnbo9AlupOjbJ5xYSTBrMIMTVtu9n530I3ZC2JZBuZBpCDzHyjI7ngh8EtCrSvUho9VGZB9Xdxt5JLGNrHwfDsSIqtvxFjefG2t2JsgJpqfZAMCjO8AURp79mU0WAaLA7R"
 INSTAGRAM_ACCOUNT_ID = "17841468918737662"
 
-url = "https://ai-deepsearch.p.rapidapi.com/api/search"
+url = "https://chatgpt-42.p.rapidapi.com/gpt4"
+
 payload = {
-    "query": "Find the most viral, trending, and controversial news today that is making waves on social media in India. Focus on shocking events, celebrity controversies, bizarre incidents, and highly engaging content that people love. Prioritize news from Instagram, Twitter, and YouTube trends, ensuring it's eye-catching and has maximum engagement. Format the response as follows: Headline: [Insert an eye-catching, bold, or sensational headline but make it fake news] Summary: [Provide a concise, punchy summary in Hindi, written in Varun Mayya’s style—casual, witty, and loaded with Gen-Z slang, emojis, and dramatic flair. Example: 'so,IT इंडस्ट्री में भूचाल आने वाला है!'] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
+	"messages": [
+		{
+			"role": "user",
+			"content": "Find the most viral, trending, and controversial news today that is making waves on social media in India. Focus on shocking events, celebrity controversies, bizarre incidents, and highly engaging content that people love. Prioritize news from Instagram, Twitter, and YouTube trends, ensuring it's eye-catching and has maximum engagement. Format the response as follows: Headline: [Insert an eye-catching, bold, or sensational headline but make it real cringe news] Summary: [Provide a concise, punchy summary in Hindi, written in Varun Mayya’s style—casual, witty, and loaded with Gen-Z slang, emojis, and dramatic flair. Example: 'so,IT इंडस्ट्री में भूचाल आने वाला है!'] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
+		}
+	],
+	"web_access": True
 }
 headers = {
-    "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
-    "x-rapidapi-host": "ai-deepsearch.p.rapidapi.com",
-    "Content-Type": "application/json"
+	"x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
+	"x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
+	"Content-Type": "application/json"
 }
+
 try:
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()  # Raise an error for bad status codes
     response_data = response.json()
+    print(response_data)
 
     # Extract result string directly
     result_string = response_data.get("result", "")
@@ -55,7 +64,7 @@ try:
     # Remove any unwanted `**` or extra formatting around the result
     headline = headline_match.group(1).strip().replace('**', '') if headline_match else "No headline found"
     summary = summary_match.group(1).strip().replace('**', '') if summary_match else "No summary found"
-    full_music = music_match.group(1).strip().replace('**', '') if music_match else "No music found"
+    full_music = music_match.group(1).strip().replace('*', "").replace('.', '') if music_match else "No music found"
     music_words = full_music.split()
     music = ' '.join(music_words[:2]) if music_words else "No music found"
 
