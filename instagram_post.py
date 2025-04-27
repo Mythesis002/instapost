@@ -80,7 +80,7 @@ url = "https://real-time-instagram-scraper-api1.p.rapidapi.com/v1/search_music"
 querystring = {"search_query": music}
 
 headers = {
-    "x-rapidapi-key": "c66b66fd5fmsh2d1f2d4c5d0a073p17161ajsnb75f8dbbac1d",
+    "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
     "x-rapidapi-host": "real-time-instagram-scraper-api1.p.rapidapi.com"
 }
 response = requests.get(url, headers=headers, params=querystring)
