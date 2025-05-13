@@ -113,7 +113,7 @@ url = "https://google-search72.p.rapidapi.com/imagesearch"
 querystring = {"q": headline, "gl": "in", "lr": "lang_en", "num": "1", "start": "0"}
 
 headers = {
-    "x-rapidapi-key": "bc4551ab84msh6733c61fc21c591p1d72c2jsnad99d9c3dd43",
+    "x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
     "x-rapidapi-host": "google-search72.p.rapidapi.com"
 }
 
