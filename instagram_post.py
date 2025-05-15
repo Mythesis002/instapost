@@ -39,7 +39,7 @@ payload = {
 			"content": "Find the most viral, trending, and controversial news today that is making waves on social media in India. Focus on shocking events, celebrity controversies, bizarre incidents, and highly engaging content that people love. Prioritize news from Instagram, Twitter, and YouTube trends, ensuring it's eye-catching and has maximum engagement. Format the response as follows: Headline: [Insert an eye-catching, bold, or sensational headline but make it real cringe news] Summary: [Provide a concise, punchy summary in Hindi, written in Varun Mayya’s style—casual, witty, and loaded with Gen-Z slang, emojis, and dramatic flair. Example: 'so,IT इंडस्ट्री में भूचाल आने वाला है!'] Music: [Suggest a currently trending music title in India (only the song name) that fits the mood of the news, based on viral Instagram/Reels trends. Format: Music: [song title].] Ensure the response is structured exactly like this, with the Hindi summary mimicking Varun Mayya’s tone—relatable, humorous, and attention-grabbing."
 		}
 	],
-	"web_access": True
+	"web_access": False
 }
 headers = {
 	"x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
