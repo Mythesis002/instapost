@@ -42,7 +42,7 @@ payload = {
 	"web_access": False
 }
 headers = {
-	"x-rapidapi-key": "628e474f5amsh0457d8f1b4fb50cp16b75cjsn70408f276e9b",
+	"x-rapidapi-key": "c4149d7f42msh169b1ac1d7c079ep17cebfjsn882b5a92dacd",
 	"x-rapidapi-host": "chatgpt-42.p.rapidapi.com",
 	"Content-Type": "application/json"
 }
